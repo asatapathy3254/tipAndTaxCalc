@@ -40,8 +40,6 @@ def tax(st,b):
     return (finaltax)
 finaltax = tax(state,bill)
 tcost += finaltax
-print (finaltax)
-print(tcost)
 
 #Calculates tip
 def tip(s, b):
@@ -54,13 +52,11 @@ def tip(s, b):
 #  else:
 #      s = input("Invalid level of service: Please re-enter service level.")
 #      tip(s,b)
-  return float(tip)
+  return tip
 
 
-tip = tip(service, bill)
+tip = tip(service, tcost)
 tcost += tip
-print (tip)
-print(tcost)
 
 #adds $ to prices and formats to only two decimal places
 finaltax = "$%.2f" %(finaltax)
@@ -72,7 +68,7 @@ receipt = {"RESTAURANT": restaurant, "STATE": state, "DATE": now,"TIME": t, "SUB
 
 #prints receipt
 f = open("receipt.txt", "w")
-f.write("-------------------------------------------")
+f.write("\n\n-------------------------------------------")
 f.write("\n\n")
 for key in receipt:
     if key == "SUB-TOTAL" or key == "SALES TAX" or key == "TIP" or key == "TOTAL":
@@ -81,5 +77,5 @@ for key in receipt:
         f.write("%s" %(receipt[key]))
     f.write("\n\n")
 f.write("APPROVED \nTHANK YOU FOR EATING AT %s!\n\n" %(restaurant))
-f.write("--------------------------------------------")
+f.write("--------------------------------------------\n\n")
 f.close()
