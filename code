@@ -1,0 +1,103 @@
+
+import datetime
+
+now = datetime.datetime.now().strftime('%m-%d-%Y')
+t = datetime.datetime.now().strftime("%H:%M")
+print (t)
+bill = float(input("What is the cost of your bill?"))
+state = input("Which state are you in?")
+state = state.upper()
+print (state)
+
+restaurant = input("Which restaurant are you dining in?")
+restaurant = restaurant.upper()
+service = input("Was your service poor, okay, or great?")
+service = service.upper()
+sigline = "X_________________"
+tcost = bill
+
+
+
+
+def tax(st,b):
+    handler = open("tax3.txt",'r')
+    dataStr = handler.read()
+    wordList = dataStr.rstrip().split("\n")
+    taxes  = {}
+    i = 0
+    tax = 0
+   
+    while i != 102:
+        taxes[wordList[i]]= wordList[i+1]
+        i += 2
+    if st in taxes:
+        for key in taxes:
+            if st == key:
+                tax = float(taxes[key])
+                print (tax)
+#    else:
+#        st = input("Invalid state: Please enter another state.")
+#    if st in taxes:  
+#        for key in taxes:
+#            if st == key:
+#                tax = float(taxes[key])
+#                print (tax)
+#    else:
+#         st = input("Invalid state: Please enter another state.")
+#         for key in taxes:
+#            if st == key:
+#                tax = float(taxes[key])
+#                print (tax)
+    finaltax = tax * b
+    return (finaltax)
+
+
+finaltax = tax(state,bill)
+tcost += finaltax
+print (finaltax)
+print(tcost)
+
+
+
+
+def tip(s, b):
+  if s == "POOR":
+    tip = 0.10 * b
+  elif s == "OKAY":
+    tip = 0.15 * b
+  elif s == "GREAT":
+    tip = 0.20 * b
+#  else:
+#      s = input("Invalid level of service: Please re-enter service level.")
+#      tip(s,b)
+  return float(tip)
+
+
+tip = tip(service, bill)
+tcost += tip
+print (tip)
+print(tcost)
+
+finaltax = "$%.2f" %(finaltax)
+tip = "$%.2f" %(tip)
+bill = "$%.2f" %(bill)
+tcost = "$%.2f" %(tcost)
+
+
+    
+
+
+receipt = {"RESTAURANT": restaurant, "STATE": state, "DATE": now,"TIME": t, "SUB-TOTAL": bill,"SALES TAX": finaltax, "TIP": tip, "TOTAL": tcost, "SIGNATURE LINE":sigline}
+
+f = open("receipt.txt", "w")
+f.write("-------------------------------------------")
+f.write("\n\n")
+for key in receipt:
+    if key == "SUB-TOTAL" or key == "SALES TAX" or key == "TIP" or key == "TOTAL":
+        f.write("%s = %s" %(key,receipt[key]))
+    else: 
+        f.write("%s" %(receipt[key]))
+    f.write("\n\n")
+f.write("APPROVED \nTHANK YOU FOR EATING AT " +str(restaurant)+ "!\n\n")
+f.write("--------------------------------------------")
+f.close()
