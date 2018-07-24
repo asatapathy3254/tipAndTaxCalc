@@ -1,14 +1,10 @@
-
 import datetime
 
 now = datetime.datetime.now().strftime('%m-%d-%Y')
 t = datetime.datetime.now().strftime("%H:%M")
-print (t)
 bill = float(input("What is the cost of your bill?"))
 state = input("Which state are you in?")
 state = state.upper()
-print (state)
-
 restaurant = input("Which restaurant are you dining in?")
 restaurant = restaurant.upper()
 service = input("Was your service poor, okay, or great?")
@@ -18,15 +14,14 @@ tcost = bill
 
 
 
-
+#calculates tax depending on state
 def tax(st,b):
-    handler = open("tax3.txt",'r')
+    handler = open("tax3.txt",'r') #opens taxes per state file
     dataStr = handler.read()
     wordList = dataStr.rstrip().split("\n")
     taxes  = {}
     i = 0
     tax = 0
-   
     while i != 102:
         taxes[wordList[i]]= wordList[i+1]
         i += 2
@@ -37,29 +32,18 @@ def tax(st,b):
                 print (tax)
 #    else:
 #        st = input("Invalid state: Please enter another state.")
-#    if st in taxes:  
 #        for key in taxes:
-#            if st == key:
-#                tax = float(taxes[key])
-#                print (tax)
-#    else:
-#         st = input("Invalid state: Please enter another state.")
-#         for key in taxes:
-#            if st == key:
-#                tax = float(taxes[key])
-#                print (tax)
+#           if st == key:
+#               tax = float(taxes[key])
+#               print (tax)
     finaltax = tax * b
     return (finaltax)
-
-
 finaltax = tax(state,bill)
 tcost += finaltax
 print (finaltax)
 print(tcost)
 
-
-
-
+#Calculates tip
 def tip(s, b):
   if s == "POOR":
     tip = 0.10 * b
@@ -78,17 +62,15 @@ tcost += tip
 print (tip)
 print(tcost)
 
+#adds $ to prices and formats to only two decimal places
 finaltax = "$%.2f" %(finaltax)
 tip = "$%.2f" %(tip)
 bill = "$%.2f" %(bill)
 tcost = "$%.2f" %(tcost)
 
-
-    
-
-
 receipt = {"RESTAURANT": restaurant, "STATE": state, "DATE": now,"TIME": t, "SUB-TOTAL": bill,"SALES TAX": finaltax, "TIP": tip, "TOTAL": tcost, "SIGNATURE LINE":sigline}
 
+#prints receipt
 f = open("receipt.txt", "w")
 f.write("-------------------------------------------")
 f.write("\n\n")
@@ -98,6 +80,6 @@ for key in receipt:
     else: 
         f.write("%s" %(receipt[key]))
     f.write("\n\n")
-f.write("APPROVED \nTHANK YOU FOR EATING AT " +str(restaurant)+ "!\n\n")
+f.write("APPROVED \nTHANK YOU FOR EATING AT %s!\n\n" %(restaurant))
 f.write("--------------------------------------------")
 f.close()
